@@ -27,3 +27,6 @@ AppData/**
 
 # Logs
 *.log
+*.env
+.env.local
+.env.*.local

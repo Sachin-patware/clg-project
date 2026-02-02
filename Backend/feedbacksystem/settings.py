@@ -122,11 +122,11 @@ WSGI_APPLICATION = 'feedbacksystem.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "mssql",
-        "NAME": "TeachersfeedbackSystem",
-        "USER": "sa",
-        "PASSWORD": "Sachin@123",
-        "HOST": "localhost\\SQLEXPRESS",
-        "PORT": "",  
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST"),
+        "PORT": os.getenv("DB_PORT"),  
         "OPTIONS": {
             "driver": "ODBC Driver 17 for SQL Server",
             "Encrypt": "no",  # Disable SSL to avoid certificate errors
@@ -134,7 +134,6 @@ DATABASES = {
         },
     }
 }
-
 
 
 # Password validation
