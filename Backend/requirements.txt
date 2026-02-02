@@ -1,0 +1,17 @@
+# Core Django Framework
+Django==5.1.7
+
+# Database Driver for SQL Server
+django-mssql-backend==2.8.1
+pyodbc==5.2.0
+
+# CORS Headers for Cross-Origin Requests
+django-cors-headers==4.6.0
+
+# Environment Variables Management
+python-dotenv==1.0.1
+
+# Additional Dependencies
+asgiref==3.8.1
+sqlparse==0.5.3
+tzdata==2025.1
