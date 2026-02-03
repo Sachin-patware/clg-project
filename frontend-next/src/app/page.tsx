@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Lock, Calendar, ShieldCheck, ArrowRight, Laptop, GraduationCap } from 'lucide-react';
 import API_BASE_URL from '@/config';
+import { apiFetch } from '@/lib/api';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { DatePicker } from '@/components/ui/DatePicker';
@@ -45,10 +46,8 @@ export default function LoginPage() {
       }
       setLoading(true);
       try {
-        const res = await fetch(`${API_BASE_URL}/dashboard-admin/login/`, {
+        const res = await apiFetch('/dashboard-admin/login/', {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
           body: JSON.stringify({ username: email, password: dob }),
         });
         const data = await res.json();
@@ -78,10 +77,8 @@ export default function LoginPage() {
     }
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE_URL}/login/`, {
+      const res = await apiFetch('/login/', {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
         body: JSON.stringify({ email, dob }),
       });
       const data = await res.json();

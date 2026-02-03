@@ -4,6 +4,7 @@ import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Star, ArrowLeft, Send } from 'lucide-react';
 import API_BASE_URL from '@/config';
+import { apiFetch } from '@/lib/api';
 import { Button } from '@/components/ui/Button';
 import { Toast, ToastType } from '@/components/ui/Toast';
 import { cn } from '@/lib/utils';
@@ -74,10 +75,8 @@ export default function FeedbackPage() {
         };
 
         try {
-            const res = await fetch(`${API_BASE_URL}/submit-feedback/`, {
+            const res = await apiFetch('/submit-feedback/', {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
                 body: JSON.stringify(feedbackData)
             });
 

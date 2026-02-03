@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { BookOpen, User, ArrowRight, AlertCircle, Loader2, CheckCircle2 } from 'lucide-react';
 import API_BASE_URL from '@/config';
+import { apiFetch } from '@/lib/api';
 import { Toast, ToastType } from '@/components/ui/Toast';
 import { cn } from '@/lib/utils';
 
@@ -38,11 +39,7 @@ export default function DashboardPage() {
 
     const fetchTeachers = async () => {
         try {
-            // Need credentials: 'include' for session based auth if backend needs cookies
-            const res = await fetch(`${API_BASE_URL}/my-teachers/`, {
-                method: "GET",
-                credentials: "include",
-            });
+            const res = await apiFetch('/my-teachers/');
 
             const data = await res.json();
 

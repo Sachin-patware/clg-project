@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, User, MessageSquare, Star, Loader2, AlertCircle, History } from 'lucide-react';
 import API_BASE_URL from '@/config';
+import { apiFetch } from '@/lib/api';
 import { Toast, ToastType } from '@/components/ui/Toast';
 import { cn } from '@/lib/utils';
 
@@ -35,10 +36,7 @@ export default function MyFeedbackPage() {
 
     const fetchHistory = async () => {
         try {
-            const res = await fetch(`${API_BASE_URL}/my-feedbacks/`, {
-                method: "GET",
-                credentials: "include",
-            });
+            const res = await apiFetch('/my-feedbacks/');
             const data = await res.json();
             if (data.status === "ok") {
                 setFeedbacks(data.feedbacks);

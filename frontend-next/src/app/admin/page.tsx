@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Database, Loader2, AlertCircle, Edit, Trash2, ChevronLeft, ChevronRight, Search, X, Save, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
 import API_BASE_URL from '@/config';
+import { apiFetch } from '@/lib/api';
 import { Toast, ToastType } from '@/components/ui/Toast';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
@@ -140,9 +141,7 @@ export default function AdminDashboard() {
 
     const fetchTables = async () => {
         try {
-            const res = await fetch(`${API_BASE_URL}/dashboard-admin/tables/`, {
-                credentials: 'include',
-            });
+            const res = await apiFetch('/dashboard-admin/tables/');
             const data = await res.json();
             if (data.status === 'ok') {
                 setTables(data.tables);
@@ -173,9 +172,7 @@ export default function AdminDashboard() {
                 url += `&search=${encodeURIComponent(searchQuery)}`;
             }
 
-            const res = await fetch(url, {
-                credentials: 'include',
-            });
+            const res = await apiFetch(url.replace(API_BASE_URL || '', ''));
             const data = await res.json();
             if (data.status === 'ok') {
                 setTableData(data);
@@ -209,10 +206,8 @@ export default function AdminDashboard() {
         if (!tableData) return;
 
         try {
-            const res = await fetch(`${API_BASE_URL}/dashboard-admin/table/${selectedTable}/add/`, {
+            const res = await apiFetch(`/dashboard-admin/table/${selectedTable}/add/`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
                 body: JSON.stringify(newRowData),
             });
             const data = await res.json();
@@ -234,10 +229,8 @@ export default function AdminDashboard() {
 
         try {
             const pkValue = editingRow[tableData.pk_field];
-            const res = await fetch(`${API_BASE_URL}/dashboard-admin/table/${selectedTable}/${pkValue}/update/`, {
+            const res = await apiFetch(`/dashboard-admin/table/${selectedTable}/${pkValue}/update/`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
                 body: JSON.stringify(editingRow),
             });
             const data = await res.json();
@@ -258,9 +251,8 @@ export default function AdminDashboard() {
 
         try {
             const pkValue = row[tableData.pk_field];
-            const res = await fetch(`${API_BASE_URL}/dashboard-admin/table/${selectedTable}/${pkValue}/delete/`, {
+            const res = await apiFetch(`/dashboard-admin/table/${selectedTable}/${pkValue}/delete/`, {
                 method: 'POST',
-                credentials: 'include',
             });
             const data = await res.json();
             if (data.status === 'ok') {
