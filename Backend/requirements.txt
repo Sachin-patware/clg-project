@@ -1,6 +1,9 @@
 # Core Django Framework
 Django==5.1.7
 
+# Django REST Framework
+djangorestframework==3.16.0
+
 # Database Driver for PostgreSQL (Modern Psycopg 3)
 psycopg[binary]==3.2.4
 
@@ -8,10 +11,10 @@ psycopg[binary]==3.2.4
 gunicorn==23.0.0
 
 # CORS Headers for Cross-Origin Requests
-django-cors-headers==4.6.0
+django-cors-headers==4.7.0
 
 # Environment Variables Management
-python-dotenv==1.0.1
+python-dotenv==1.2.1
 
 # Static File Serving (for Render)
 whitenoise==6.9.0
