@@ -7,8 +7,8 @@ class CsrfExemptMiddleware:
         self.get_response = get_response
         # List of URL paths to exempt from CSRF
         self.exempt_urls = [
-            '/admin/login/',
-            '/admin/table/',
+            '/login/',
+            '/dashboard-admin/',
         ]
 
     def __call__(self, request):

@@ -82,13 +82,20 @@ except ImportError:
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
     "https://clg-project-sand.vercel.app",
+    "https://clg-project-git-main-sachinpatware10-2970s-projects.vercel.app",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:3001",
     "http://127.0.0.1:3001",
 ]
+
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https:\/\/clg-project-.*\.vercel\.app$",
+]
+
 CSRF_TRUSTED_ORIGINS = [
     "https://clg-project-sand.vercel.app",
+    "https://clg-project-git-main-sachinpatware10-2970s-projects.vercel.app",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:3001",
@@ -98,25 +105,30 @@ CSRF_TRUSTED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_HEADERS = [
-    "content-type",
-    "authorization",
-    "x-csrftoken",
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
 ]
 
 # Session cookie settings for cross-origin requests
 SESSION_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SECURE = True  # Set to True only if using HTTPS
+SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_DOMAIN = None
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 86400  # 1 day
 
-
 # CSRF Settings
-CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript to read CSRF token
+CSRF_COOKIE_HTTPONLY = False  # Allow JS to read if needed, though cross-domain won't see it
 CSRF_COOKIE_SAMESITE = 'None'
-CSRF_USE_SESSIONS = False
 CSRF_COOKIE_SECURE = True
+CSRF_USE_SESSIONS = False  # Keep using cookies for now
 
 ROOT_URLCONF = 'feedbacksystem.urls'
 
