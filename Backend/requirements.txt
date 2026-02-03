@@ -1,8 +1,11 @@
 # Core Django Framework
 Django==5.1.7
 
-# Database Driver for PostgreSQL
-psycopg2-binary==2.9.10
+# Database Driver for PostgreSQL (Modern Psycopg 3)
+psycopg[binary]==3.2.4
+
+# Production WSGI Server
+gunicorn==23.0.0
 
 # CORS Headers for Cross-Origin Requests
 django-cors-headers==4.6.0
