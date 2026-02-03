@@ -23,3 +23,7 @@ whitenoise==6.9.0
 asgiref==3.8.1
 sqlparse==0.5.3
 tzdata==2025.1
+
+# JWT Authentication
+djangorestframework-simplejwt==5.5.1
+PyJWT==2.10.1

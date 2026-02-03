@@ -25,8 +25,8 @@ export default function DashboardLayout({
     useEffect(() => {
         // Check auth
         if (typeof window !== 'undefined') {
-            const session = localStorage.getItem('session_key');
-            if (!session) {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
                 router.push('/');
             } else {
                 setUser({

@@ -12,14 +12,9 @@ from feedback_app.models.feedback_submissionlog import Feedback_SubmissionLog
 from feedback_app.models.academic_allocation import Academic_Allocation
 from feedback_app.models.users_student import Users_Student
 from functools import wraps
+from feedback_app.auth import generate_jwt, jwt_required, jwt_admin_required
 
-def login_required_api(view_func):
-    @wraps(view_func)
-    def wrapper(request, *args, **kwargs):
-        if not request.session.get("is_authenticated"):
-            return JsonResponse({"status": "error", "error": "not authenticated please login"}, status=401)
-        return view_func(request, *args, **kwargs)
-    return wrapper
+# LEGACY DECORATORS REMOVED (Replaced by feedback_app.auth)
 
 # login api 
 @csrf_exempt
@@ -100,20 +95,20 @@ def login(request):
 
     user_dob = user.DateOfBirth
     if user_dob and user_dob == dob:
-        request.session['user_enrollment'] = user.EnrollmentNo
-        request.session['user_email'] = user.Email
-        request.session['user_fullname'] = user.FullName
-        request.session['is_authenticated'] = True
-        request.session.set_expiry(24 * 3600)
-        request.session.save()
-        request.session.modified = True
+        # Generate JWT
+        token = generate_jwt({
+            'enrollment': user.EnrollmentNo,
+            'email': user.Email,
+            'name': user.FullName
+        }, user_type='student')
+
         return JsonResponse({
             'status': 'ok',
             'message': 'login successful',
             'EnrollmentNo': user.EnrollmentNo,
             'FullName': user.FullName,
             'Email': user.Email,
-            'session_key': request.session.session_key,
+            'access': token,
         })
 
     return JsonResponse({'status': 'error', 'error': 'invalid credentials'}, status=401)
@@ -135,16 +130,16 @@ def logout(request):
 
 
 @require_GET
-@login_required_api
+@jwt_required
 def my_teachers(request):
     """
     Return subjects and their assigned teachers for the logged-in student.
     Matches student Branch, Year, Section, and Semester with Academic_Allocation.
     """
 
-    enrollment = request.session.get("user_enrollment")
+    enrollment = request.jwt_payload.get("enrollment")
     if not enrollment:
-        return JsonResponse({"status": "error", "error": "not authenticated"}, status=401)
+        return JsonResponse({"status": "error", "error": "invalid token payload"}, status=401)
 
     try:
         student = Users_Student.objects.get(EnrollmentNo=enrollment)
@@ -218,7 +213,7 @@ def my_teachers(request):
 
 @csrf_exempt
 @require_POST
-@login_required_api
+@jwt_required
 def submit_feedback(request):
     """
     Student submits feedback using allocation_id + subject_code.
@@ -264,9 +259,9 @@ def submit_feedback(request):
     # -------------------------------------
     # 3. Get Student
     # -------------------------------------
-    enrollment_no = request.session.get("user_enrollment")
+    enrollment_no = request.jwt_payload.get("enrollment")
     if not enrollment_no:
-        return JsonResponse({"status": "error", "error": "not authenticated"}, status=401)
+        return JsonResponse({"status": "error", "error": "invalid token payload"}, status=401)
 
     try:
         student = Users_Student.objects.get(EnrollmentNo=enrollment_no)
@@ -364,13 +359,13 @@ def submit_feedback(request):
 
 
 @require_GET
-@login_required_api
+@jwt_required
 def my_feedbacks(request):
     """
     Return a list of feedbacks submitted by the logged-in student.
     Includes teacher and subject details along with ratings.
     """
-    enrollment = request.session.get("user_enrollment")
+    enrollment = request.jwt_payload.get("enrollment")
     
     # Filter logs for this student
     logs = Feedback_SubmissionLog.objects.filter(EnrollmentNo=enrollment).select_related(
@@ -432,14 +427,7 @@ check_db_connection_and_list_tables()
 import os
 from django.apps import apps
 
-def admin_required(view_func):
-    """Decorator to check if user is admin"""
-    @wraps(view_func)
-    def wrapper(request, *args, **kwargs):
-        if not request.session.get("is_admin"):
-            return JsonResponse({"status": "error", "error": "admin access required"}, status=403)
-        return view_func(request, *args, **kwargs)
-    return wrapper
+# LEGACY ADMIN DECORATOR REMOVED
 
 
 @csrf_exempt
@@ -462,23 +450,23 @@ def admin_login(request):
     admin_password = os.getenv("ADMIN_PASSWORD", "admin@123")
     
     if username == admin_username and password == admin_password:
-        request.session['is_admin'] = True
-        request.session['admin_username'] = username
-        request.session.set_expiry(24 * 3600)  # 1 day
-        request.session.save()
-        
+        # Generate JWT
+        token = generate_jwt({
+            'username': username
+        }, user_type='admin')
+
         return JsonResponse({
-            "status": "ok",
-            "message": "admin login successful",
-            "username": username,
-            "session_key": request.session.session_key
+            'status': 'ok',
+            'message': 'admin login successful',
+            'username': username,
+            'access': token
         })
     
     return JsonResponse({"status": "error", "error": "invalid credentials"}, status=401)
 
 
 @require_GET
-@admin_required
+@jwt_admin_required
 def admin_list_tables(request):
     """List all database tables"""
     try:
@@ -514,7 +502,7 @@ def admin_list_tables(request):
 
 
 @require_GET
-@admin_required
+@jwt_admin_required
 def admin_get_table_data(request, table_name):
     """Get data from a specific table with optional pagination"""
     try:
@@ -672,7 +660,7 @@ def admin_get_table_data(request, table_name):
 
 @csrf_exempt
 @require_POST
-@admin_required
+@jwt_admin_required
 def admin_add_row(request, table_name):
     """Add a new row to a table"""
     # Restricted Tables
@@ -744,7 +732,7 @@ def admin_add_row(request, table_name):
 
 @csrf_exempt
 @require_POST
-@admin_required
+@jwt_admin_required
 def admin_update_row(request, table_name, row_id):
     """Update a row in a table"""
     # Restricted Tables
@@ -812,7 +800,7 @@ def admin_update_row(request, table_name, row_id):
 
 @csrf_exempt
 @require_POST
-@admin_required
+@jwt_admin_required
 def admin_delete_row(request, table_name, row_id):
     """Delete a row from a table"""
     # Restricted Tables

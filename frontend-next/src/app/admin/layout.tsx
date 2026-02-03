@@ -21,10 +21,11 @@ export default function AdminLayout({
     useEffect(() => {
         // Check admin auth
         if (typeof window !== 'undefined') {
+            const token = localStorage.getItem('access_token');
             const isAdmin = localStorage.getItem('is_admin');
             const username = localStorage.getItem('admin_username');
 
-            if (!isAdmin || isAdmin !== 'true') {
+            if (!token || isAdmin !== 'true') {
                 router.push('/');
             } else {
                 setAdmin({ username: username || 'Admin' });

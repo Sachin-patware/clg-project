@@ -53,7 +53,7 @@ export default function LoginPage() {
         const data = await res.json();
         if (data.status === "ok") {
           if (typeof window !== 'undefined') {
-            localStorage.setItem("session_key", data.session_key);
+            localStorage.setItem("access_token", data.access);
             localStorage.setItem("admin_username", data.username);
             localStorage.setItem("is_admin", "true");
           }
@@ -84,7 +84,7 @@ export default function LoginPage() {
       const data = await res.json();
       if (data.status === "ok") {
         if (typeof window !== 'undefined') {
-          localStorage.setItem("session_key", data.session_key);
+          localStorage.setItem("access_token", data.access);
           localStorage.setItem("enrollment", data.EnrollmentNo);
           localStorage.setItem("fullName", data.FullName);
           localStorage.setItem("email", data.Email);

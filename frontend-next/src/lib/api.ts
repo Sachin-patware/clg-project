@@ -13,6 +13,14 @@ export async function apiFetch(endpoint: string, options: RequestInit = {}) {
         'Content-Type': 'application/json',
     };
 
+    // Add JWT token if it exists in localStorage
+    if (typeof window !== 'undefined') {
+        const token = localStorage.getItem('access_token');
+        if (token) {
+            defaultHeaders['Authorization'] = `Bearer ${token}`;
+        }
+    }
+
     // Merge headers
     const headers = {
         ...defaultHeaders,
@@ -22,7 +30,6 @@ export async function apiFetch(endpoint: string, options: RequestInit = {}) {
     const response = await fetch(url, {
         ...options,
         headers,
-        credentials: 'include', // CRITICAL: This ensures cookies are sent across domains
     });
 
     return response;
