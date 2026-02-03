@@ -20,7 +20,7 @@ class Feedback_SubmissionLog(models.Model):
     Timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = "Feedback_SubmissionLog"
+        db_table = "feedback_submissionlog"
         managed = False
 
     def __str__(self):

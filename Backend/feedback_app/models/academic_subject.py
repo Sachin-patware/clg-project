@@ -7,7 +7,7 @@ class Academic_Subject(models.Model):
     Semester = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
     Branch = models.CharField(max_length=20)
     class Meta:
-        db_table = "Academic_Subject"
+        db_table = "academic_subject"
         managed = False
 
     def __str__(self):

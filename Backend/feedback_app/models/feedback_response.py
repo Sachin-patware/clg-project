@@ -26,7 +26,7 @@ class Feedback_Response(models.Model):
     Comments = models.CharField(max_length=500, blank=True, null=True, validators=[MaxLengthValidator(500)])
 
     class Meta:
-        db_table = "Feedback_Response"
+        db_table = "feedback_response"
         managed = False
 
     def __str__(self):

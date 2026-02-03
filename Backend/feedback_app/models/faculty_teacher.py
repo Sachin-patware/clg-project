@@ -12,7 +12,7 @@ class Faculty_Teacher(models.Model):
     Designation = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
-        db_table = "Faculty_Teacher"
+        db_table = "faculty_teacher"
         managed = False
 
     def __str__(self):

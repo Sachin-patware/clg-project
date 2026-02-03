@@ -20,7 +20,7 @@ class Users_Student(models.Model):
     DateOfBirth = models.DateField(null=True, blank=True, verbose_name="Date of Birth")
 
     class Meta:
-        db_table = "Users_Student"
+        db_table = "users_student"
         managed = False
 
     def __str__(self):

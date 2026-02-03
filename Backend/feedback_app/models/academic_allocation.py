@@ -19,7 +19,7 @@ class Academic_Allocation(models.Model):
     Target_Section = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
 
     class Meta:
-        db_table = "Academic_Allocation"
+        db_table = "academic_allocation"
         managed = False
 
     def __str__(self):
