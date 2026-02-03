@@ -75,6 +75,7 @@ MIDDLEWARE = [
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
     "https://clg-project-sand.vercel.app",
+    "https://teachers-feedback-app-sand.vercel.app",
     "https://clg-project-git-main-sachinpatware10-2970s-projects.vercel.app",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
@@ -88,6 +89,7 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 
 CSRF_TRUSTED_ORIGINS = [
     "https://clg-project-sand.vercel.app",
+    "https://teachers-feedback-app-sand.vercel.app",
     "https://clg-project-git-main-sachinpatware10-2970s-projects.vercel.app",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
@@ -126,8 +128,6 @@ SIMPLE_JWT = {
     'SIGNING_KEY': SECRET_KEY,
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
-
-
 # Session cookie settings for cross-origin requests
 SESSION_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SECURE = True
