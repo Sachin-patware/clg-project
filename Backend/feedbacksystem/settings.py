@@ -32,10 +32,14 @@ print(now_ist.isoformat())
 SECRET_KEY = 'django-insecure-e3u1h3_w&qk8of!mxt=j(ji(xhusa83(^==x#lnqi=!8ce^3ed'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '.onrender.com',
+    '*', # Final fallback for flexibility
+]
 
 
 
