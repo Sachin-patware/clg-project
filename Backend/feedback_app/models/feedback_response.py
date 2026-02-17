@@ -23,7 +23,7 @@ class Feedback_Response(models.Model):
     Q9_Rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(RATING_MIN), MaxValueValidator(RATING_MAX)])
     Q10_Rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(RATING_MIN), MaxValueValidator(RATING_MAX)])
 
-    Comments = models.CharField(max_length=500, blank=True, null=True, validators=[MaxLengthValidator(500)])
+    Comments = models.CharField(max_length=20, blank=True, null=True, validators=[MaxLengthValidator(20)])
 
     class Meta:
         db_table = "feedback_response"
